@@ -73,7 +73,7 @@ TiToDo.prototype.createTab = function(icon,title,window){
 * タスクリストにタスクを設定するためのメソッド
 * @method setTaskList
 * @param taskList {array型} タスク名、タスクの状態を持ったオブジェクトが1つ以上ある配列
-* @return {} 戻り値としては何も返さない
+* @return {Array} 
 **/
 TiToDo.prototype.setTaskList = function(taskList){
 	var task, _i, _len,row,taskName,taskStatus,rows = [];
@@ -110,6 +110,30 @@ TiToDo.prototype.setTaskList = function(taskList){
 
 	return this.taskList.setData(rows);
 };
+
+/**
+* ACSに登録してあるタスク情報を取得する
+* @method taskList
+* @return {array} [{"taskName":"",taskStatus:""},{}...}]という構造の配列を返す
+**/
+TiToDo.prototype.getTaskData = function(callback){
+	var Cloud = require('ti.cloud');
+	Cloud.Users.login({
+		login: "h5y1m141",
+		password: "orih6254"
+	}, function(result) {
+		Cloud.Objects.query({
+			classname: "tasks",
+			page: 1,
+			per_page: 20
+		}, function(e) {
+			if (e.success) {
+				callback(e.tasks);
+			}
+		});
+	});
+	      
+};
 var titodo = new TiToDo();
 var tabGroup = Ti.UI.createTabGroup();
 
@@ -119,14 +143,11 @@ var win3 = titodo.createWindow('TaskList','#ff99cc');
 var label1 = titodo.createLabel('I amd window 1 Label');
 var label2 = titodo.createLabel('this is a window 2 Label');
 
-var taskData = [
-	{"taskName":"TitaniumのClassicスタイルで既存のアプリのリファクタリングを実施する",taskStatus:true},
-	{"taskName":"Alloy使ったToDoサンプルアプリを考えてみる",taskStatus:true},
-	{"taskName":"Titaniumのmoduleプロジェクトの使い方について学ぶ",taskStatus:true},
-	{"taskName":"TiShadowの使い方についてブログにまとめる",taskStatus:false}
-];
+titodo.getTaskData(function(taskData) {
+	titodo.setTaskList(taskData);	
 
-titodo.setTaskList(taskData);
+}); 
+
 win1.add(label1);
 win2.add(label2);
 win3.add(titodo.taskList);
