@@ -133,13 +133,6 @@ TiToDo.prototype.getTaskData = function(callback){
 		});
 	});
 	      
-	// var taskData = [
-	// 	{"taskName":"TitaniumのClassicスタイルで既存のアプリのリファクタリングを実施する",taskStatus:true},
-	// 	{"taskName":"Alloy使ったToDoサンプルアプリを考えてみる",taskStatus:true},
-	// 	{"taskName":"Titaniumのmoduleプロジェクトの使い方について学ぶ",taskStatus:true},
-	// 	{"taskName":"TiShadowの使い方についてブログにまとめる",taskStatus:false}
-	// ];
-	// return taskData;
 };
 var titodo = new TiToDo();
 var tabGroup = Ti.UI.createTabGroup();
