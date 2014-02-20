@@ -27,28 +27,49 @@ TiToDo.prototype.createLabel = function(text){
 
 };
 
+/**
+* プロジェクト設定時に出来上がるひな形のアプリだとWindowの生成に関するロジックが重複してるのでそこを共通化
+* @method createWindow
+* @param title {text型} Ti.Ui.Windowのタイトルにに設定したい文字を引数に渡す
+* @param backgroundColor {text型} Ti.Ui.Windowの背景色に設定したい値を渡す
+* @return {Ti.Ui.Window} 引数に渡された値でTi.Ui.Windowを生成する
+**/
+
+TiToDo.prototype.createWindow = function(title,backgroundColor){
+	var win = Titanium.UI.createWindow({  
+		title:title,
+		backgroundColor:backgroundColor
+	});
+	return win;
+
+};
+
+var titodo = new TiToDo();
 var tabGroup = Titanium.UI.createTabGroup();
 
-var win1 = Titanium.UI.createWindow({  
-    title:'Tab 1',
-    backgroundColor:'#fff'
-});
+var win1 = titodo.createWindow('Tab 1','#336699');
+// var win1 = Titanium.UI.createWindow({  
+//     title:
+//     backgroundColor:
+// });
+var win2 = titodo.createWindow('This is a Tab 2','#ff99cc');
+// var win2 = Titanium.UI.createWindow({  
+//     title:'Tab 2',
+//     backgroundColor:'#fff'
+// });
 var tab1 = Titanium.UI.createTab({  
     icon:'KS_nav_views.png',
     title:'Tab 1',
     window:win1
 });
 
-var titodo = new TiToDo();
+
 
 var label1 = titodo.createLabel('I amd window 1 Label');
 var label2 = titodo.createLabel('this is a window 2 Label');
 win1.add(label1);
 
-var win2 = Titanium.UI.createWindow({  
-    title:'Tab 2',
-    backgroundColor:'#fff'
-});
+
 var tab2 = Titanium.UI.createTab({  
     icon:'KS_nav_ui.png',
     title:'Tab 2',
