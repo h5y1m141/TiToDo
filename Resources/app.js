@@ -16,7 +16,7 @@ function TiToDo(){
 **/
 
 TiToDo.prototype.createLabel = function(text){
-	var label = Titanium.UI.createLabel({
+	var label = Ti.UI.createLabel({
 		color:'#999',
 		text:text,
 		font:{fontSize:20,fontFamily:'Helvetica Neue'},
@@ -36,7 +36,7 @@ TiToDo.prototype.createLabel = function(text){
 **/
 
 TiToDo.prototype.createWindow = function(title,backgroundColor){
-	var win = Titanium.UI.createWindow({  
+	var win = Ti.UI.createWindow({  
 		title:title,
 		backgroundColor:backgroundColor
 	});
@@ -54,7 +54,7 @@ TiToDo.prototype.createWindow = function(title,backgroundColor){
 **/
 
 TiToDo.prototype.createTab = function(icon,title,window){
-	var tab = Titanium.UI.createTab({  
+	var tab = Ti.UI.createTab({  
 		icon:icon,
 		title:title,
 		window:window
@@ -64,20 +64,27 @@ TiToDo.prototype.createTab = function(icon,title,window){
 };
 
 var titodo = new TiToDo();
-var tabGroup = Titanium.UI.createTabGroup();
+var tabGroup = Ti.UI.createTabGroup();
 
-var win1 = titodo.createWindow('Tab 1','#336699');
-var win2 = titodo.createWindow('This is a Tab 2','#ff99cc');
+var win1 = titodo.createWindow('Tab 1',"#f9f9f9");
+var win2 = titodo.createWindow('This is a Tab 2','#f9f9f9');
+var win3 = titodo.createWindow('TaskList','#ff99cc');
 var label1 = titodo.createLabel('I amd window 1 Label');
 var label2 = titodo.createLabel('this is a window 2 Label');
+var taskList = Ti.UI.createTableView({
+	width:Ti.UI.FULL,
+	height:'auto',
+	backgroundColor:"#f9f9f9"
+});
 win1.add(label1);
 win2.add(label2);
+win3.add(taskList);
 var tab1 = titodo.createTab('KS_nav_views.png','Tab 1',win1);
 var tab2 = titodo.createTab('KS_nav_ui.png','Tab 2',win2);
-
+var tab3 = titodo.createTab('KS_nav_views.png','Tab 3',win3);
 
 tabGroup.addTab(tab1);  
 tabGroup.addTab(tab2);  
-
+tabGroup.addTab(tab3);  
 tabGroup.open();
 
