@@ -35,7 +35,7 @@
     "classitems": [
         {
             "file": "app.js",
-            "line": 11,
+            "line": 17,
             "description": "プロジェクト設定時に出来上がるひな形のアプリだとLabelの生成に関するロジックが重複してるのでそこを共通化",
             "itemtype": "method",
             "name": "createLabel",
@@ -54,7 +54,7 @@
         },
         {
             "file": "app.js",
-            "line": 30,
+            "line": 36,
             "description": "プロジェクト設定時に出来上がるひな形のアプリだとWindowの生成に関するロジックが重複してるのでそこを共通化",
             "itemtype": "method",
             "name": "createWindow",
@@ -78,7 +78,7 @@
         },
         {
             "file": "app.js",
-            "line": 47,
+            "line": 53,
             "description": "プロジェクト設定時に出来上がるひな形のアプリだとTabの生成に関するロジックが重複してるのでそこを共通化",
             "itemtype": "method",
             "name": "createTab",
@@ -102,6 +102,37 @@
             "return": {
                 "description": "引数に渡された値でTi.Ui.Tabを生成する",
                 "type": "Ti.Ui.Tab"
+            },
+            "class": "TiToDo"
+        },
+        {
+            "file": "app.js",
+            "line": 72,
+            "description": "タスクリストにタスクを設定するためのメソッド",
+            "itemtype": "method",
+            "name": "setTaskList",
+            "params": [
+                {
+                    "name": "taskList",
+                    "description": "タスク名、タスクの状態を持ったオブジェクトが1つ以上ある配列",
+                    "type": "Array型"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Array"
+            },
+            "class": "TiToDo"
+        },
+        {
+            "file": "app.js",
+            "line": 114,
+            "description": "ACSに登録してあるタスク情報を取得する",
+            "itemtype": "method",
+            "name": "taskList",
+            "return": {
+                "description": "[{\"taskName\":\"\",taskStatus:\"\"},{}...}]という構造の配列を返す",
+                "type": "Array"
             },
             "class": "TiToDo"
         }

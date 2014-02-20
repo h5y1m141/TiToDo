@@ -93,6 +93,12 @@
 **/
 
 function TiToDo(){
+	this.taskList = Ti.UI.createTableView({
+		width:Ti.UI.FULL,
+		height:&#x27;auto&#x27;,
+		backgroundColor:&quot;#f9f9f9&quot;
+	});
+
 	this.name = &quot;TiToDo&quot;;
 };
 
@@ -104,7 +110,7 @@ function TiToDo(){
 **/
 
 TiToDo.prototype.createLabel = function(text){
-	var label = Titanium.UI.createLabel({
+	var label = Ti.UI.createLabel({
 		color:&#x27;#999&#x27;,
 		text:text,
 		font:{fontSize:20,fontFamily:&#x27;Helvetica Neue&#x27;},
@@ -124,7 +130,7 @@ TiToDo.prototype.createLabel = function(text){
 **/
 
 TiToDo.prototype.createWindow = function(title,backgroundColor){
-	var win = Titanium.UI.createWindow({  
+	var win = Ti.UI.createWindow({  
 		title:title,
 		backgroundColor:backgroundColor
 	});
@@ -142,7 +148,7 @@ TiToDo.prototype.createWindow = function(title,backgroundColor){
 **/
 
 TiToDo.prototype.createTab = function(icon,title,window){
-	var tab = Titanium.UI.createTab({  
+	var tab = Ti.UI.createTab({  
 		icon:icon,
 		title:title,
 		window:window
@@ -151,19 +157,92 @@ TiToDo.prototype.createTab = function(icon,title,window){
 
 };
 
-var titodo = new TiToDo();
-var tabGroup = Titanium.UI.createTabGroup();
+/**
+* タスクリストにタスクを設定するためのメソッド
+* @method setTaskList
+* @param taskList {array型} タスク名、タスクの状態を持ったオブジェクトが1つ以上ある配列
+* @return {Array} 
+**/
+TiToDo.prototype.setTaskList = function(taskList){
+	var task, _i, _len,row,taskName,taskStatus,rows = [];
 
-var win1 = titodo.createWindow(&#x27;Tab 1&#x27;,&#x27;#336699&#x27;);
-var win2 = titodo.createWindow(&#x27;This is a Tab 2&#x27;,&#x27;#ff99cc&#x27;);
+	for (_i = 0, _len = taskList.length; _i &lt; _len; _i++) {
+		row = Ti.UI.createTableViewRow({
+        backgroundColor: &quot;#f9f9f9&quot;,
+        height:60,
+        hasChild:false
+      });
+		task = taskList[_i];
+		taskName = Ti.UI.createLabel({
+			top:5,
+			left:10,
+			color:&#x27;#222&#x27;,
+			width:200,
+			height:&#x27;auto&#x27;,
+			text:task.taskName,
+			font:{fontSize:14},
+			textAlign:&#x27;left&#x27;
+
+		});
+		taskStatus = Ti.UI.createSwitch({
+			titleOn:&#x27;Done&#x27;,
+			titleOff:&#x27;work in progress &#x27;,
+			value:task.taskStatus,
+			right:10
+		});
+ 	  row.add(taskName);
+		row.add(taskStatus);
+		rows.push(row);
+		
+	}
+
+	return this.taskList.setData(rows);
+};
+
+/**
+* ACSに登録してあるタスク情報を取得する
+* @method taskList
+* @return {array} [{&quot;taskName&quot;:&quot;&quot;,taskStatus:&quot;&quot;},{}...}]という構造の配列を返す
+**/
+TiToDo.prototype.getTaskData = function(callback){
+	var Cloud = require(&#x27;ti.cloud&#x27;);
+	Cloud.Users.login({
+		login: &quot;h5y1m141&quot;,
+		password: &quot;orih6254&quot;
+	}, function(result) {
+		Cloud.Objects.query({
+			classname: &quot;tasks&quot;,
+			page: 1,
+			per_page: 20
+		}, function(e) {
+			if (e.success) {
+				callback(e.tasks);
+			}
+		});
+	});
+	      
+};
+var titodo = new TiToDo();
+var tabGroup = Ti.UI.createTabGroup();
+
+var win1 = titodo.createWindow(&#x27;Tab 1&#x27;,&quot;#f9f9f9&quot;);
+var win2 = titodo.createWindow(&#x27;This is a Tab 2&#x27;,&#x27;#f9f9f9&#x27;);
+var win3 = titodo.createWindow(&#x27;TaskList&#x27;,&#x27;#ff99cc&#x27;);
 var label1 = titodo.createLabel(&#x27;I amd window 1 Label&#x27;);
 var label2 = titodo.createLabel(&#x27;this is a window 2 Label&#x27;);
+
+titodo.getTaskData(function(taskData) {
+	titodo.setTaskList(taskData);	
+
+}); 
+
 win1.add(label1);
 win2.add(label2);
+win3.add(titodo.taskList);
 var tab1 = titodo.createTab(&#x27;KS_nav_views.png&#x27;,&#x27;Tab 1&#x27;,win1);
 var tab2 = titodo.createTab(&#x27;KS_nav_ui.png&#x27;,&#x27;Tab 2&#x27;,win2);
-
-
+var tab3 = titodo.createTab(&#x27;KS_nav_views.png&#x27;,&#x27;Tab 3&#x27;,win3);
+tabGroup.addTab(tab3);  
 tabGroup.addTab(tab1);  
 tabGroup.addTab(tab2);  
 
