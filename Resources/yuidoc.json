@@ -1,0 +1,10 @@
+{
+    "name": "TiToDo",
+    "description": "TitaniumStudioで設定した際に出来上がるひな形をベースにしたToDo",
+    "version": "0.1",
+    "url": "http://h5y1m141.hatenablog.com/",
+    "options": {
+        "outdir": "./docs",
+        "paths":["./"]
+    }
+}
